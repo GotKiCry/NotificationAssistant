@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddNoticeFactorActivity">
+
+    <TextView
+        android:id="@+id/status_view"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#13B695"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:id="@+id/layout_bar"
+        app:layout_constraintTop_toBottomOf="@id/status_view"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="#13B695"
+        android:orientation="horizontal">
+        <include
+            android:id="@+id/bar_layout"
+            layout="@layout/action_bar_factor"
+            />
+    </LinearLayout>
+
+
+    <TimePicker
+        android:id="@+id/factor_timePicker"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_bar" />
+
+    <TextView
+        android:id="@+id/text_lable1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/title"
+        android:textColor="#111"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/factor_timePicker" />
+
+    <EditText
+        android:id="@+id/factor_edittext_title"
+        app:layout_constraintTop_toTopOf="@id/text_lable1"
+        app:layout_constraintStart_toEndOf="@id/text_lable1"
+        android:layout_marginStart="5dp"
+        android:gravity="left"
+        android:maxLength="12"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textColor="#111"
+        android:layout_width="250dp"
+        android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/text_lable2"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/date"
+        android:textColor="#111"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/text_lable1"
+        app:layout_constraintTop_toBottomOf="@+id/text_lable1" />
+    <TextView
+        android:id="@+id/factor_text_date"
+        app:layout_constraintTop_toTopOf="@id/text_lable2"
+        app:layout_constraintStart_toEndOf="@id/text_lable2"
+        android:layout_marginStart="10dp"
+        android:text="2017.06.05"
+        android:textSize="25sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:id="@+id/text_lable3"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/notice_way"
+        android:textColor="#111"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/text_lable2"
+        app:layout_constraintTop_toBottomOf="@+id/text_lable2" />
+    <Spinner
+        android:id="@+id/factor_spinner"
+        app:layout_constraintTop_toTopOf="@id/text_lable3"
+        app:layout_constraintStart_toEndOf="@id/text_lable3"
+        android:entries="@array/factor_array"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

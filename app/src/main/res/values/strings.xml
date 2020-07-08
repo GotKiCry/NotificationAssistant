@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NotificationAssistant</string>
+    <string name="title" translatable="false">Title</string>
+    <string name="date" translatable="false">Date</string>
+    <string name="notice_way" translatable="false">NoticeWay</string>
+    <string-array name="factor_array">
+        <item>Calendar</item>
+        <item>Alarm clock</item>
+    </string-array>
+</resources>
