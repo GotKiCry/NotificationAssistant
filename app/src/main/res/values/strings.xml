@@ -3,6 +3,12 @@
     <string name="title" translatable="false">Title</string>
     <string name="date" translatable="false">Date</string>
     <string name="notice_way" translatable="false">NoticeWay</string>
+    <string name="day" translatable="false">day</string>
+    <string name="month" translatable="false">month</string>
+    <string name="title_waring" translatable="false">Title cannot be empty</string>
+    <string name="pop_update">update</string>
+    <string name="pop_del">delete</string>
+    <string name="addOrUpDate_Waring">Please fill in the correct time</string>
     <string-array name="factor_array">
         <item>Calendar</item>
         <item>Alarm clock</item>
