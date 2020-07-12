@@ -14,10 +14,6 @@ class NoticeViewModel constructor(application: Application) : AndroidViewModel(a
         livedataNotice = database.getNoticeDao().getAllNotice()
     }
 
-    fun getRoomDatabase():Database{
-        return  database
-    }
-
     fun getLiveDataNotice():LiveData<List<Notice>>{
         return livedataNotice
     }

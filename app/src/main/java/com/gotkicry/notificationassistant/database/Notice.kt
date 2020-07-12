@@ -12,7 +12,7 @@ class Notice (
     var month : String,
     var year: String,
     var title : String,
-    var noticeWay : String,
+    var noticeWay : Int,
     var noticeTime : String,
     var date: Long
 ){

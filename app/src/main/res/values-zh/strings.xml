@@ -9,9 +9,26 @@
     <string name="title_waring">标题不能为空</string>
     <string name="pop_update">修改</string>
     <string name="pop_del">删除</string>
-    <string name="addOrUpDate_Waring">请填入正确的时间</string>
+    <string name="addOrUpDate_Waring">往日不可追</string>
+    <string name="title_add">添加</string>
+    <string name="title_update">修改</string>
+    <string name="notification_text">您设置的提醒 </string>
+    <string-array name="month_">
+        <item>1月</item>
+        <item >2月</item>
+        <item >3月</item>
+        <item >4月</item>
+        <item >5月</item>
+        <item >6月</item>
+        <item >7月</item>
+        <item >8月</item>
+        <item >9月</item>
+        <item >10月</item>
+        <item >11月</item>
+        <item >12月</item>
+    </string-array>
     <string-array name="factor_array">
         <item>日历</item>
-        <item>闹钟</item>
+        <item>通知</item>
     </string-array>
 </resources>

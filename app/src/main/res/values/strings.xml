@@ -3,14 +3,32 @@
     <string name="title" translatable="false">Title</string>
     <string name="date" translatable="false">Date</string>
     <string name="notice_way" translatable="false">NoticeWay</string>
-    <string name="day" translatable="false">day</string>
+    <string name="day" translatable="false">th</string>
     <string name="month" translatable="false">month</string>
     <string name="title_waring" translatable="false">Title cannot be empty</string>
     <string name="pop_update">update</string>
     <string name="pop_del">delete</string>
-    <string name="addOrUpDate_Waring">Please fill in the correct time</string>
+    <string name="addOrUpDate_Waring">Can\'t remind you in the past</string>
+    <string name="title_add">Add</string>
+    <string name="title_update">Update</string>
+    <string name="notification_text">You set a reminder at </string>
+    <string-array name="month_">
+        <item>Jan</item>
+        <item >Feb</item>
+        <item >Mar</item>
+        <item >Apr</item>
+        <item >May</item>
+        <item >Jun</item>
+        <item >Jul</item>
+        <item >Aug</item>
+        <item >Sept</item>
+        <item >Oct</item>
+        <item >Nov</item>
+        <item >Dec</item>
+    </string-array>
+
     <string-array name="factor_array">
-        <item>Calendar</item>
-        <item>Alarm clock</item>
+        <item>Calendar</item>N
+        <item>Notification</item>
     </string-array>
 </resources>

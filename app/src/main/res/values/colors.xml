@@ -6,4 +6,6 @@
     <color name="item_finish">#A3A3A3</color>
     <color name="item_not_finish_black">#2C2C2C</color>
     <color name="item_not_finish_gray">#686866</color>
+    <color name="item_finish_backgroud">#eeeeee</color>
+    <color name="item_not_finish_backgroud">#ffffff</color>
 </resources>

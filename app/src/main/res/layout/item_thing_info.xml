@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="#eeeeee"
+    android:background="#FFFFFF"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/item_date_day"

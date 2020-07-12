@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gotkicry.notificationassistant">
 
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/TranslucentTheme">
+        <service
+            android:name=".backstage.KeepAliveService"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver android:name=".backstage.NotificationBroadcastReceiver"/>
         <activity android:name=".AddNoticeFactorActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

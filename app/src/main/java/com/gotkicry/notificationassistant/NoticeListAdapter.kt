@@ -22,8 +22,8 @@ import java.util.*
 
 private const val TAG = "NoticeListAdapter";
 class NoticeListAdapter constructor(private var list : List<Notice>, private var context : Context) : BaseAdapter() {
-
-    class ViewHolder(view: View){
+    val noticeFunction : NoticeFunction = NoticeFunction(context)
+    class ViewHolder(var view: View){
         val item_Date_Day : TextView = view.findViewById(R.id.item_date_day)
         val item_Date_Month : TextView = view.findViewById(R.id.item_date_month)
         val item_Detail_time : TextView = view.findViewById(R.id.item_detail_time)
@@ -32,6 +32,7 @@ class NoticeListAdapter constructor(private var list : List<Notice>, private var
         var isOldTime = false
         fun setFinishColor(context: Context){
             val color = ContextCompat.getColor(context, R.color.item_finish)
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.item_finish_backgroud))
             item_Date_Day.setTextColor(color)
             item_Date_Month.setTextColor(color)
             item_Detail_time.setTextColor(color)
@@ -41,6 +42,7 @@ class NoticeListAdapter constructor(private var list : List<Notice>, private var
         fun setNotFinishColor(context: Context){
             val black = ContextCompat.getColor(context, R.color.item_not_finish_black)
             val gray = ContextCompat.getColor(context, R.color.item_not_finish_gray)
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.item_not_finish_backgroud))
             item_Date_Day.setTextColor(black)
             item_Date_Month.setTextColor(gray)
             item_Detail_time.setTextColor(gray)
@@ -62,11 +64,16 @@ class NoticeListAdapter constructor(private var list : List<Notice>, private var
             view = convertView
             viewHolder = view.tag as ViewHolder
         }
-        viewHolder.item_Date_Day.text = "${notice.dayofMonth}"
-        viewHolder.item_Date_Month.text = "日  ${notice.month}月"
-        viewHolder.item_Detail_time.text = "${notice.noticeTime}"
-        viewHolder.item_Notice_Way.text = "${notice.noticeWay}"
-        viewHolder.item_Title.text = "${notice.title}"
+
+        viewHolder.item_Date_Day.text = notice.dayofMonth
+        viewHolder.item_Date_Month.text = "${context.getString(R.string.day)}  ${context.resources.getStringArray(R.array.month_)[(notice.month).toInt()-1]}"
+        viewHolder.item_Detail_time.text = notice.noticeTime
+        viewHolder.item_Notice_Way.text = when(notice.noticeWay){
+            0->context.resources.getStringArray(R.array.factor_array)[0]
+            1->context.resources.getStringArray(R.array.factor_array)[1]
+            else -> "Error"
+        }
+        viewHolder.item_Title.text = notice.title
         //弹出菜单 待替换PopupWindow
         val popupMenu = PopupMenu(context,view)
         popupMenu.menuInflater.inflate(R.menu.item_pop_menu,popupMenu.menu)
@@ -111,7 +118,7 @@ class NoticeListAdapter constructor(private var list : List<Notice>, private var
         return list.size
     }
 
-    fun changeColor(viewHolder : ViewHolder,notice : Notice){
+    private fun changeColor(viewHolder : ViewHolder, notice : Notice){
         val result = Date().time - notice.date
         viewHolder.isOldTime = result > 0
         if(viewHolder.isOldTime){

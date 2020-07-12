@@ -19,6 +19,11 @@ interface  NoticeDao {
     @Query("SELECT * FROM Notice WHERE id = :id")
     fun getOneNotice(id : Int) : Notice
 
+    @Query("SELECT id FROM Notice ORDER BY id DESC limit 1")
+    fun getLastID():Int
+
+
+
     @Delete
     fun delNotice(notice: Notice)
 
