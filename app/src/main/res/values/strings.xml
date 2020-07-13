@@ -12,6 +12,7 @@
     <string name="title_add">Add</string>
     <string name="title_update">Update</string>
     <string name="notification_text">You set a reminder at </string>
+    <string name="main_sync_toast">Calendar synchronized</string>
     <string-array name="month_">
         <item>Jan</item>
         <item >Feb</item>

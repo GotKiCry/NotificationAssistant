@@ -1,17 +1,12 @@
 package com.gotkicry.notificationassistant
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlarmManager
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.gotkicry.notificationassistant.database.Database
@@ -21,20 +16,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.util.*
 
-private const val TAG = "AddNoticeFactorActivity";
+
 class AddNoticeFactorActivity : AppCompatActivity() {
-    private lateinit var bind : ActivityAddNoticeFactorBinding
+    private lateinit var bind: ActivityAddNoticeFactorBinding
     private lateinit var database: Database
-    private var tagTime : Long = 0
+    private var tagTime: Long = 0
     private var mYear: Int = 0
     private var mDayofMonth: Int = 0
     private var mMonth: Int = 0
-    private var id : Int? = null
+    private var id: Int? = null
     private var lastNoticeWay = 0
-    var eventsID : Long? = null
+    private var eventsID: Long? = null
     private var isAdd = true
     private lateinit var noticeFunction: NoticeFunction
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +37,9 @@ class AddNoticeFactorActivity : AppCompatActivity() {
         setContentView(bind.root)
 
         isAdd = intent.getBooleanExtra("isAdd", true)
-        if(isAdd){
+        if (isAdd) {
             addNewNotice()
-        }else{
+        } else {
             updateNotice()
         }
         init()
@@ -63,20 +57,20 @@ class AddNoticeFactorActivity : AppCompatActivity() {
     private fun addNewNotice() {
         val calendar = Calendar.getInstance()
         mYear = calendar.get(Calendar.YEAR)
-        mMonth = calendar.get(Calendar.MONTH)+1
+        mMonth = calendar.get(Calendar.MONTH) + 1
         mDayofMonth = calendar.get(Calendar.DAY_OF_MONTH)
         initMainView()
     }
 
     private fun updateNotice() {
-        var oneNotice : Notice
+        var oneNotice: Notice
         GlobalScope.launch {
             oneNotice = database.getNoticeDao().getOneNotice(intent.getIntExtra("noticeId", 1))
             initUIdata(oneNotice)
         }
     }
 
-    private fun initUIdata(oneNotice : Notice) {
+    private fun initUIdata(oneNotice: Notice) {
         id = oneNotice.id
         eventsID = oneNotice.eventsID
         bind.factorEdittextTitle.setText(oneNotice.title)
@@ -97,32 +91,37 @@ class AddNoticeFactorActivity : AppCompatActivity() {
         bind.factorTextDate.setOnClickListener {
             DatePickerDialog(this,
                 DatePickerDialog.OnDateSetListener
-                { view, year, month, dayOfMonth ->
+                { _, year, month, dayOfMonth ->
                     this.mDayofMonth = dayOfMonth
-                    this.mMonth = month+1
+                    this.mMonth = month + 1
                     this.mYear = year
                     bind.factorTextDate.text = "$mYear.$mMonth.$mDayofMonth"
                 }
-                ,mYear,mMonth-1,mDayofMonth).show()
+                , mYear, mMonth - 1, mDayofMonth).show()
 
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun initBar() {
         bind.barLayout.barButtonBack.setOnClickListener {
             finish()
         }
-        bind.barLayout.barTextTitle.text = if(isAdd){
+        bind.barLayout.barTextTitle.text = if (isAdd) {
             getString(R.string.title_add)
-        }else{
+        } else {
             getString(R.string.title_update)
         }
 
         bind.barLayout.barButtonFinish.setOnClickListener {
-            val hour = "${bind.factorTimePicker.hour}"
-            val min = if(bind.factorTimePicker.minute < 10){
+            val hour = if (bind.factorTimePicker.hour < 10) {
+                "0${bind.factorTimePicker.hour}"
+            } else {
+                "${bind.factorTimePicker.hour}"
+            }
+            val min = if (bind.factorTimePicker.minute < 10) {
                 "0${bind.factorTimePicker.minute}"
-            }else{
+            } else {
                 "${bind.factorTimePicker.minute}"
             }
             val noticeTime = "$hour:$min"
@@ -130,35 +129,51 @@ class AddNoticeFactorActivity : AppCompatActivity() {
             val month = this.mMonth
             val year = this.mYear
             val title = bind.factorEdittextTitle.text.toString()
-            if(title.isEmpty()){
-                Toast.makeText(this,getString(R.string.title_waring),Toast.LENGTH_SHORT).show()
+            if (title.isEmpty()) {
+                Toast.makeText(this, getString(R.string.title_waring), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val noticeWay = bind.factorSpinner.selectedItemPosition
-            Log.d(TAG, "initBar: $noticeWay")
-            var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm")
-            val strings = "$year-$month-$dayofMonth ${bind.factorTimePicker.hour}:${bind.factorTimePicker.minute}"
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm")
+            val strings =
+                "$year-$month-$dayofMonth ${bind.factorTimePicker.hour}:${bind.factorTimePicker.minute}"
             val date = simpleDateFormat.parse(strings).time
-            if(Date().time > date){
-                Toast.makeText(this,getString(R.string.addOrUpDate_Waring),Toast.LENGTH_SHORT).show()
+            if (Date().time > date) {
+                Toast.makeText(this, getString(R.string.addOrUpDate_Waring), Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
-            tagTime = noticeFunction.getTagTime(mYear, mMonth, mDayofMonth, hour.toInt(), min.toInt())
-            if(noticeWay == 0){
-                if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR),1)
+            tagTime =
+                noticeFunction.getTagTime(mYear, mMonth, mDayofMonth, hour.toInt(), min.toInt())
+            if (noticeWay == 0) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.WRITE_CALENDAR
+                    ) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_CALENDAR
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(
+                            Manifest.permission.READ_CALENDAR,
+                            Manifest.permission.WRITE_CALENDAR
+                        ),
+                        1
+                    )
                     return@setOnClickListener
                 }
             }
-            Log.d(TAG, "initBar: 执行了一次")
-            addOrUpdate(id,dayofMonth,month,year,title,noticeWay,noticeTime,date,eventsID)
+            addOrUpdate(id, dayofMonth, month, year, title, noticeWay, noticeTime, date, eventsID)
             finish()
         }
 
     }
 
-    private fun addOrUpdate(id : Int?,
+    private fun addOrUpdate(
+        id: Int?,
         dayofMonth: Int,
         month: Int,
         year: Int,
@@ -166,53 +181,55 @@ class AddNoticeFactorActivity : AppCompatActivity() {
         noticeWay: Int,
         noticeTime: String,
         date: Long,
-        eventsID : Long?
-    ){
-
-
+        eventsID: Long?
+    ) {
         GlobalScope.launch(Dispatchers.IO) {
-            val notice : Notice = Notice(id,dayofMonth,month,year,title,noticeWay,noticeTime,date,eventsID)
+            val notice =
+                Notice(id, dayofMonth, month, year, title, noticeWay, noticeTime, date, eventsID)
             setMission(notice)
         }
     }
 
-    suspend fun setMission(notice: Notice){
+    suspend fun setMission(notice: Notice) {
         val noticeDao = database.getNoticeDao()
         val calendarFunction = CalendarFunction(this)
-        Log.d(TAG, "setMission: isAdd : $isAdd")
-        if(isAdd){
-            if(notice.noticeWay == 0){
-                notice.eventsID = calendarFunction.addCalendar(notice.title,notice.date)
+        if (isAdd) {
+            if (notice.noticeWay == 0) {
+                notice.eventsID = calendarFunction.addCalendar(notice.title, notice.date)
             }
             noticeDao.addNewNotice(notice)
-            canAddAlarmManager(noticeDao.getLastID(),notice,tagTime)
-        }else{
-            if(lastNoticeWay == notice.noticeWay){
-                when(notice.noticeWay){
-                    0-> calendarFunction.updateCalendar(notice.eventsID!!,notice.title,notice.date)
-                    1-> return
+            canAddAlarmManager(noticeDao.getLastID(), notice, tagTime)
+        } else {
+            if (lastNoticeWay == notice.noticeWay) {
+                when (notice.noticeWay) {
+                    0 -> calendarFunction.updateCalendar(
+                        notice.eventsID!!,
+                        notice.title,
+                        notice.date
+                    )
+                    1 -> return
                 }
-            }else{
-                when(notice.noticeWay){
-                    0-> {
-                        notice.eventsID = calendarFunction.addCalendar(notice.title,notice.date)
-                        noticeFunction.cancelAlarmManager(notice.id!!,lastNoticeWay)
+            } else {
+                when (notice.noticeWay) {
+                    0 -> {
+                        notice.eventsID = calendarFunction.addCalendar(notice.title, notice.date)
+                        noticeFunction.cancelAlarmManager(notice.id!!, lastNoticeWay)
                     }
-                    1-> {
+                    1 -> {
                         calendarFunction.delCalendar(notice.eventsID!!)
                         notice.eventsID = null
-                        noticeFunction.cancelAlarmManager(notice.id!!,lastNoticeWay)
+                        noticeFunction.cancelAlarmManager(notice.id!!, lastNoticeWay)
                     }
                 }
             }
             noticeDao.updateNotice(notice)
-            canAddAlarmManager(notice.id!!,notice,tagTime)
+            canAddAlarmManager(notice.id!!, notice, tagTime)
         }
     }
 
-    private fun canAddAlarmManager(id : Int , notice: Notice , tagTime : Long){
-        noticeFunction.cancelAlarmManager(id,notice.noticeWay)
-        noticeFunction.addAlarmManager(id,tagTime,notice)
+    private fun canAddAlarmManager(id: Int, notice: Notice, tagTime: Long) {
+        noticeFunction.cancelAlarmManager(id, notice.noticeWay)
+        noticeFunction.addAlarmManager(id, tagTime, notice)
     }
 
     private fun addSystemBarSpace() {
@@ -225,7 +242,4 @@ class AddNoticeFactorActivity : AppCompatActivity() {
         layoutParam.height = height
         bind.statusView.layoutParams = layoutParam
     }
-
-
-
 }

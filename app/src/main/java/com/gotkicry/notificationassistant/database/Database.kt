@@ -1,9 +1,7 @@
 package com.gotkicry.notificationassistant.database
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 
@@ -16,7 +14,7 @@ abstract class Database : RoomDatabase(){
             if(databaseInstance == null){
                 synchronized(Database::class.java){
                     if(databaseInstance == null){
-                        databaseInstance = Room.databaseBuilder(
+                        databaseInstance = databaseBuilder(
                             application,
                             com.gotkicry.notificationassistant.database.Database::class.java,
                             "notice.db"

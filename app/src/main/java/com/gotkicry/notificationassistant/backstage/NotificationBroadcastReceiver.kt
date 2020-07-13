@@ -13,23 +13,23 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.gotkicry.notificationassistant.R
+import com.gotkicry.notificationassistant.database.Database
 import com.gotkicry.notificationassistant.database.Notice
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class NotificationBroadcastReceiver : BroadcastReceiver(){
+class NotificationBroadcastReceiver : BroadcastReceiver() {
     private var id = 0
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("TAG", "onReceive: ${intent?.action}")
-        when(intent?.action){
-            "com.gotkicry.UPDATE_UI"-> {
+        when (intent?.action) {
+            "com.gotkicry.UPDATE_UI" -> {
                 sendBroadcast(context)
-                Log.d("TAG", "onReceive: -------------------------------------------")
             }
-            "com.gotkicry.notificationassistant"->{
+            "com.gotkicry.notificationassistant" -> {
                 GlobalScope.launch {
-                    val singleData = getSingleData(context as Application, intent!!.getIntExtra("id", 0))
-                    showNotification(context,singleData)
+                    val singleData =
+                        getSingleData(context as Application, intent!!.getIntExtra("id", 0))
+                    showNotification(context, singleData)
                     sendBroadcast(context)
                 }
             }
@@ -41,36 +41,40 @@ class NotificationBroadcastReceiver : BroadcastReceiver(){
         context?.sendBroadcast(intent)
     }
 
-    private fun getSingleData(application: Application,id : Int):Notice{
-        val notice = com.gotkicry.notificationassistant.database.Database.getDatabase(application)!!
+    private fun getSingleData(application: Application, id: Int): Notice {
+        return Database.getDatabase(application)!!
             .getNoticeDao().getOneNotice(id)
-        Log.d("TAG", "getSingleData: ${notice.toString()}")
-        return notice
     }
 
-    private fun showNotification(context: Context?,notice: Notice){
+    private fun showNotification(context: Context?, notice: Notice) {
         val channel_ID = "1"
         val channel_Name = "Notice_"
 
-        val notificationManager = context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val notificationChannel = NotificationChannel(channel_ID,
+        val notificationManager =
+            context?.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channel_ID,
                 channel_Name,
-                NotificationManager.IMPORTANCE_HIGH)
+                NotificationManager.IMPORTANCE_HIGH
+            )
             notificationManager.createNotificationChannel(notificationChannel)
         }
-        val notification = NotificationCompat.Builder(context,channel_ID)
+        val notification = NotificationCompat.Builder(context, channel_ID)
             .setContentTitle(notice.title)
             .setContentText("${context.getString(R.string.notification_text)} ${notice.noticeTime}")
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setLargeIcon(BitmapFactory.decodeResource(context.resources,
-                R.mipmap.ic_launcher
-            ))
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    context.resources,
+                    R.mipmap.ic_launcher
+                )
+            )
             .build()
         notification.flags = Notification.FLAG_AUTO_CANCEL
-        notificationManager.notify(id++,notification )
-        var currentTimeMillis = System.currentTimeMillis()
-        Log.d("TAG", "addAlarmManager: $currentTimeMillis")
+        notificationManager.notify(id++, notification)
+        val currentTimeMillis = System.currentTimeMillis()
+        Log.d("TAG", "Now Time: $currentTimeMillis")
 
     }
 }

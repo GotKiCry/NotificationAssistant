@@ -13,6 +13,7 @@
     <string name="title_add">添加</string>
     <string name="title_update">修改</string>
     <string name="notification_text">您设置的提醒 </string>
+    <string name="main_sync_toast">日历已同步</string>
     <string-array name="month_">
         <item>1月</item>
         <item >2月</item>
