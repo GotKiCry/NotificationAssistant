@@ -47,10 +47,11 @@ class MainActivity : AppCompatActivity() {
     private fun loadData() {
         //获取数据库
         val noticeViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(NoticeViewModel::class.java)
-        noticeViewModel.getLiveDataNotice().observe(this, Observer {
+        noticeViewModel.getLiveDataNotice().observe(this, Observer { it ->
             list.clear()
             list.addAll(it)
             adapter.notifyDataSetChanged()
+            it.forEach { Log.d(TAG, "loadData: $it") }
             if(isFirstOpen){
                 GlobalScope.launch {
                     val passedTime = Database.getDatabase(application)!!.getNoticeDao().getPassedTime(Date().time).size
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                     val time = notice.noticeTime.split(":")
                     val hour = time[0].toInt()
                     val minute = time[1].toInt()
-                    noticeFunction.addAlarmManager(notice.id!!,noticeFunction.getTagTime(year,month,dayOfMonth,hour,minute),notice.noticeWay)
+                    noticeFunction.addAlarmManager(notice.id!!,noticeFunction.getTagTime(year,month,dayOfMonth,hour,minute),notice)
                 }
 
                 isFirstOpen = false

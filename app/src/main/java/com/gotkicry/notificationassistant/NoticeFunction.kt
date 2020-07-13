@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.gotkicry.notificationassistant.database.Notice
 import java.util.*
 
 private const val TAG = "NoticeFunctionActivity";
@@ -30,9 +31,9 @@ class NoticeFunction constructor(var context: Context) {
         context.startActivity(intent)
     }
 
-    fun addAlarmManager(id: Int,tagTime : Long,noticeWay : Int){
+    fun addAlarmManager(id: Int,tagTime : Long,notice: Notice){
         val intent = Intent()
-        when(noticeWay){
+        when(notice.noticeWay){
             0->intent.action = "com.gotkicry.UPDATE_UI"
             1->intent.action = "com.gotkicry.notificationassistant"
         }

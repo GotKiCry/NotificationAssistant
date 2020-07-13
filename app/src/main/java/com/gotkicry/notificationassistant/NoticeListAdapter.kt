@@ -65,7 +65,7 @@ class NoticeListAdapter constructor(private var list : List<Notice>, private var
             viewHolder = view.tag as ViewHolder
         }
 
-        viewHolder.item_Date_Day.text = notice.dayofMonth
+        viewHolder.item_Date_Day.text = notice.dayofMonth.toString()
         viewHolder.item_Date_Month.text = "${context.getString(R.string.day)}  ${context.resources.getStringArray(R.array.month_)[(notice.month).toInt()-1]}"
         viewHolder.item_Detail_time.text = notice.noticeTime
         viewHolder.item_Notice_Way.text = when(notice.noticeWay){
