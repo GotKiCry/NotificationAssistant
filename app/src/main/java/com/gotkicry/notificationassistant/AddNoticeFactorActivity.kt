@@ -7,6 +7,9 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.DatePicker
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.gotkicry.notificationassistant.database.Database
@@ -80,6 +83,8 @@ class AddNoticeFactorActivity : AppCompatActivity() {
         lastNoticeWay = oneNotice.noticeWay
         bind.factorSpinner.setSelection(oneNotice.noticeWay)
         val split = oneNotice.noticeTime.split(":")
+        bind.factorTimePicker.setIs24HourView(false)
+        bind.factorTimePicker.descendantFocusability = TimePicker.FOCUS_BLOCK_DESCENDANTS
         bind.factorTimePicker.hour = split[0].toInt()
         bind.factorTimePicker.minute = split[1].toInt()
         initMainView()
@@ -134,7 +139,7 @@ class AddNoticeFactorActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val noticeWay = bind.factorSpinner.selectedItemPosition
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm")
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm") //hh -- 12小时 HH -- 24小时
             val strings =
                 "$year-$month-$dayofMonth ${bind.factorTimePicker.hour}:${bind.factorTimePicker.minute}"
             val date = simpleDateFormat.parse(strings).time

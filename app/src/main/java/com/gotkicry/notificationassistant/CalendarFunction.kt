@@ -7,6 +7,8 @@ import android.content.Context
 import android.net.Uri
 import android.provider.CalendarContract.Events
 import android.provider.CalendarContract.Reminders
+import android.util.Log
+import android.widget.Toast
 import com.gotkicry.notificationassistant.database.Database
 import com.gotkicry.notificationassistant.database.Notice
 import kotlinx.coroutines.GlobalScope
@@ -91,6 +93,7 @@ class CalendarFunction constructor(var context: Context) {
             noticeDao.addNewNotice(notice)
         }
         query.close()
+
     }
 
     fun cleanDatabase() {
@@ -107,8 +110,11 @@ class CalendarFunction constructor(var context: Context) {
                     eventsID.remove(id)
                 }
             }
-            for (id in eventsID!!) {
-                noticeDao.delByEventsID(id)
+            Log.d("TAG", "cleanDatabase: ${eventsID!!.size}")
+            for (id : Long? in eventsID) {
+                Log.d("TAG", "cleanDatabase: $id")
+                if(id == null) continue
+                noticeDao.delByEventsID(id!!)
             }
             cursor.close()
         }

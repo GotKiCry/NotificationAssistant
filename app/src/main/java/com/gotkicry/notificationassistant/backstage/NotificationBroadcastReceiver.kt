@@ -63,7 +63,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, channel_ID)
             .setContentTitle(notice.title)
             .setContentText("${context.getString(R.string.notification_text)} ${notice.noticeTime}")
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.mipmap.ic_launcher_)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     context.resources,

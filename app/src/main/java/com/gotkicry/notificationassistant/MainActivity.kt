@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
         calendarFunction = CalendarFunction(this)
-        calendarFunction.cleanDatabase()
         //获取数据库
         val noticeViewModel = ViewModelProvider(
             this,
@@ -104,6 +103,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALENDAR), 1)
         } else {
+            calendarFunction.cleanDatabase()
             calendarFunction.getCalendar()
         }
     }
